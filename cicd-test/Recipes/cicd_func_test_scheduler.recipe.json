@@ -1,0 +1,631 @@
+{
+  "name": "CICD | FUNC | Test: Scheduler",
+  "description": "12.3.0",
+  "version": 23,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "clock",
+    "name": "scheduled_event",
+    "as": "1aff1693",
+    "title": null,
+    "description": "<span class=\"provider\">Trigger</span> on a <span class=\"provider\">specified schedule</span>",
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "time_unit": "minutes",
+      "trigger_every": "5"
+    },
+    "extended_input_schema": [
+      {
+        "type": "string",
+        "name": "trigger_every",
+        "control_type": "integer",
+        "label": "Trigger every",
+        "hint": "Define repeating schedule. Enter whole numbers only.\n                        This field can be set to a minimum of 5 minutes.",
+        "default": "5",
+        "optional": false,
+        "extends_schema": true
+      },
+      {
+        "type": "date_time",
+        "name": "start_after",
+        "control_type": "date_time",
+        "label": "Start after",
+        "hint": "Set date and time to start or leave blank to start immediately. <b>Once recipe has been run or tested, value cannot be changed.</b>",
+        "optional": true,
+        "extends_schema": true,
+        "since_field": true,
+        "render_input": "date_time_conversion",
+        "parse_output": "date_time_conversion"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "rest",
+        "name": "make_request_v2",
+        "as": "3f09b5b5",
+        "title": "Send request",
+        "description": "<span class=\"provider\">Send request</span> via <span class=\"provider\">HTTP</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "response.ignore_http_errors": true
+        },
+        "input": {
+          "request_name": "Send request",
+          "request": {
+            "method": "GET",
+            "content_type": "application/json",
+            "url": "http://test.cicd.workato.com/pipeline"
+          },
+          "response": {
+            "output_type": "json",
+            "expected_encoding": "UTF-8",
+            "ignore_http_errors": "false"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "type": "object",
+            "name": "headers",
+            "label": "Headers",
+            "properties": [
+
+            ]
+          },
+          {
+            "type": "object",
+            "name": "response",
+            "label": "Response",
+            "properties": [
+
+            ]
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "type": "object",
+            "name": "response",
+            "label": "Response",
+            "properties": [
+              {
+                "control_type": "select",
+                "label": "Response content type",
+                "pick_list": [
+                  [
+                    "Text",
+                    "rawdatatxt"
+                  ],
+                  [
+                    "Binary",
+                    "rawdata"
+                  ],
+                  [
+                    "JSON",
+                    "json"
+                  ],
+                  [
+                    "XML",
+                    "xml2"
+                  ]
+                ],
+                "hint": "Select expected format of data response type, e.g. JSON or XML. <a href=\"https://docs.workato.com/developing-connectors/http.html#response-type\" target=\"_blank\">Learn more</a>",
+                "default": "json",
+                "extends_schema": true,
+                "type": "string",
+                "name": "output_type"
+              },
+              {
+                "control_type": "select",
+                "label": "Encoding",
+                "pick_list": [
+                  [
+                    "UTF-8",
+                    "UTF-8"
+                  ],
+                  [
+                    "US-ASCII",
+                    "US-ASCII"
+                  ],
+                  [
+                    "UTF-16BE",
+                    "UTF-16BE"
+                  ],
+                  [
+                    "UTF-16LE",
+                    "UTF-16LE"
+                  ],
+                  [
+                    "UTF-32BE",
+                    "UTF-32BE"
+                  ],
+                  [
+                    "UTF-32LE",
+                    "UTF-32LE"
+                  ],
+                  [
+                    "UTF-16",
+                    "UTF-16"
+                  ],
+                  [
+                    "UTF-32",
+                    "UTF-32"
+                  ],
+                  [
+                    "UTF8-MAC",
+                    "UTF8-MAC"
+                  ],
+                  [
+                    "EUC-JP",
+                    "EUC-JP"
+                  ],
+                  [
+                    "Windows-31J",
+                    "Windows-31J"
+                  ],
+                  [
+                    "Big5",
+                    "Big5"
+                  ],
+                  [
+                    "Big5-HKSCS",
+                    "Big5-HKSCS"
+                  ],
+                  [
+                    "Big5-UAO",
+                    "Big5-UAO"
+                  ],
+                  [
+                    "CP949",
+                    "CP949"
+                  ],
+                  [
+                    "Emacs-Mule",
+                    "Emacs-Mule"
+                  ],
+                  [
+                    "EUC-KR",
+                    "EUC-KR"
+                  ],
+                  [
+                    "EUC-TW",
+                    "EUC-TW"
+                  ],
+                  [
+                    "GB2312",
+                    "GB2312"
+                  ],
+                  [
+                    "GB18030",
+                    "GB18030"
+                  ],
+                  [
+                    "GBK",
+                    "GBK"
+                  ],
+                  [
+                    "ISO-8859-1",
+                    "ISO-8859-1"
+                  ],
+                  [
+                    "ISO-8859-2",
+                    "ISO-8859-2"
+                  ],
+                  [
+                    "ISO-8859-3",
+                    "ISO-8859-3"
+                  ],
+                  [
+                    "ISO-8859-4",
+                    "ISO-8859-4"
+                  ],
+                  [
+                    "ISO-8859-5",
+                    "ISO-8859-5"
+                  ],
+                  [
+                    "ISO-8859-6",
+                    "ISO-8859-6"
+                  ],
+                  [
+                    "ISO-8859-7",
+                    "ISO-8859-7"
+                  ],
+                  [
+                    "ISO-8859-8",
+                    "ISO-8859-8"
+                  ],
+                  [
+                    "ISO-8859-9",
+                    "ISO-8859-9"
+                  ],
+                  [
+                    "ISO-8859-10",
+                    "ISO-8859-10"
+                  ],
+                  [
+                    "ISO-8859-11",
+                    "ISO-8859-11"
+                  ],
+                  [
+                    "ISO-8859-13",
+                    "ISO-8859-13"
+                  ],
+                  [
+                    "ISO-8859-14",
+                    "ISO-8859-14"
+                  ],
+                  [
+                    "ISO-8859-15",
+                    "ISO-8859-15"
+                  ],
+                  [
+                    "ISO-8859-16",
+                    "ISO-8859-16"
+                  ],
+                  [
+                    "KOI8-R",
+                    "KOI8-R"
+                  ],
+                  [
+                    "KOI8-U",
+                    "KOI8-U"
+                  ],
+                  [
+                    "Shift_JIS",
+                    "Shift_JIS"
+                  ],
+                  [
+                    "Windows-1250",
+                    "Windows-1250"
+                  ],
+                  [
+                    "Windows-1251",
+                    "Windows-1251"
+                  ],
+                  [
+                    "Windows-1252",
+                    "Windows-1252"
+                  ],
+                  [
+                    "Windows-1253",
+                    "Windows-1253"
+                  ],
+                  [
+                    "Windows-1254",
+                    "Windows-1254"
+                  ],
+                  [
+                    "Windows-1257",
+                    "Windows-1257"
+                  ],
+                  [
+                    "IBM437",
+                    "IBM437"
+                  ],
+                  [
+                    "IBM737",
+                    "IBM737"
+                  ],
+                  [
+                    "IBM775",
+                    "IBM775"
+                  ],
+                  [
+                    "CP850",
+                    "CP850"
+                  ],
+                  [
+                    "IBM852",
+                    "IBM852"
+                  ],
+                  [
+                    "CP852",
+                    "CP852"
+                  ],
+                  [
+                    "IBM855",
+                    "IBM855"
+                  ],
+                  [
+                    "CP855",
+                    "CP855"
+                  ],
+                  [
+                    "IBM857",
+                    "IBM857"
+                  ],
+                  [
+                    "IBM860",
+                    "IBM860"
+                  ],
+                  [
+                    "IBM861",
+                    "IBM861"
+                  ],
+                  [
+                    "IBM862",
+                    "IBM862"
+                  ],
+                  [
+                    "IBM863",
+                    "IBM863"
+                  ],
+                  [
+                    "IBM864",
+                    "IBM864"
+                  ],
+                  [
+                    "IBM865",
+                    "IBM865"
+                  ],
+                  [
+                    "IBM866",
+                    "IBM866"
+                  ],
+                  [
+                    "IBM869",
+                    "IBM869"
+                  ],
+                  [
+                    "Windows-1258",
+                    "Windows-1258"
+                  ],
+                  [
+                    "GB1988",
+                    "GB1988"
+                  ],
+                  [
+                    "macCentEuro",
+                    "macCentEuro"
+                  ],
+                  [
+                    "macCroatian",
+                    "macCroatian"
+                  ],
+                  [
+                    "macCyrillic",
+                    "macCyrillic"
+                  ],
+                  [
+                    "macGreek",
+                    "macGreek"
+                  ],
+                  [
+                    "macIceland",
+                    "macIceland"
+                  ],
+                  [
+                    "macRoman",
+                    "macRoman"
+                  ],
+                  [
+                    "macRomania",
+                    "macRomania"
+                  ],
+                  [
+                    "macThai",
+                    "macThai"
+                  ],
+                  [
+                    "macTurkish",
+                    "macTurkish"
+                  ],
+                  [
+                    "macUkraine",
+                    "macUkraine"
+                  ],
+                  [
+                    "CP950",
+                    "CP950"
+                  ],
+                  [
+                    "CP951",
+                    "CP951"
+                  ],
+                  [
+                    "IBM037",
+                    "IBM037"
+                  ],
+                  [
+                    "stateless-ISO-2022-JP",
+                    "stateless-ISO-2022-JP"
+                  ],
+                  [
+                    "eucJP-ms",
+                    "eucJP-ms"
+                  ],
+                  [
+                    "CP51932",
+                    "CP51932"
+                  ],
+                  [
+                    "EUC-JIS-2004",
+                    "EUC-JIS-2004"
+                  ],
+                  [
+                    "GB12345",
+                    "GB12345"
+                  ],
+                  [
+                    "ISO-2022-JP",
+                    "ISO-2022-JP"
+                  ],
+                  [
+                    "ISO-2022-JP-2",
+                    "ISO-2022-JP-2"
+                  ],
+                  [
+                    "CP50220",
+                    "CP50220"
+                  ],
+                  [
+                    "CP50221",
+                    "CP50221"
+                  ],
+                  [
+                    "Windows-1256",
+                    "Windows-1256"
+                  ],
+                  [
+                    "Windows-1255",
+                    "Windows-1255"
+                  ],
+                  [
+                    "TIS-620",
+                    "TIS-620"
+                  ],
+                  [
+                    "Windows-874",
+                    "Windows-874"
+                  ],
+                  [
+                    "MacJapanese",
+                    "MacJapanese"
+                  ],
+                  [
+                    "UTF-7",
+                    "UTF-7"
+                  ],
+                  [
+                    "UTF8-DoCoMo",
+                    "UTF8-DoCoMo"
+                  ],
+                  [
+                    "SJIS-DoCoMo",
+                    "SJIS-DoCoMo"
+                  ],
+                  [
+                    "UTF8-KDDI",
+                    "UTF8-KDDI"
+                  ],
+                  [
+                    "SJIS-KDDI",
+                    "SJIS-KDDI"
+                  ],
+                  [
+                    "ISO-2022-JP-KDDI",
+                    "ISO-2022-JP-KDDI"
+                  ],
+                  [
+                    "stateless-ISO-2022-JP-KDDI",
+                    "stateless-ISO-2022-JP-KDDI"
+                  ],
+                  [
+                    "UTF8-SoftBank",
+                    "UTF8-SoftBank"
+                  ],
+                  [
+                    "SJIS-SoftBank",
+                    "SJIS-SoftBank"
+                  ]
+                ],
+                "optional": true,
+                "default": "UTF-8",
+                "hint": "Default encoding type is set to UTF-8, and typically doesn't need to be changed. <a href=\"https://docs.workato.com/developing-connectors/http.html#expected-encoding\" target=\"_blank\">Learn more</a>",
+                "type": "string",
+                "name": "expected_encoding"
+              },
+              {
+                "control_type": "schema-designer",
+                "label": "Response schema",
+                "sample_data_type": "json_http",
+                "extends_schema": true,
+                "empty_schema_title": "Describe all fields in your response.",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "name": "response_schema"
+              },
+              {
+                "control_type": "schema-designer",
+                "label": "HTTP response headers",
+                "extends_schema": true,
+                "empty_schema_title": "Describe all the response headers",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "name": "headers_schema"
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Mark non-2xx response codes as success?",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Mark non-2xx response codes as success?",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "default": false,
+                  "hint": "If <b>yes</b>, non 2xx response codes returned will be marked as a successful action. If <b>no</b>, non 2xx response codes returned will be marked as an error.",
+                  "optional": true,
+                  "type": "boolean",
+                  "name": "ignore_http_errors"
+                },
+                "default": "false",
+                "hint": "If <b>yes</b>, non 2xx response codes returned will be marked as a successful action. If <b>no</b>, non 2xx response codes returned will be marked as an error.",
+                "optional": true,
+                "type": "boolean",
+                "name": "ignore_http_errors"
+              }
+            ],
+            "override": true
+          }
+        ],
+        "uuid": "47cd3d54-77bf-4008-8062-3cb20c7c7853",
+        "wizardFinished": true
+      },
+      {
+        "number": 2,
+        "provider": "logger",
+        "name": "log_message",
+        "as": "83c018b3",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "message": "#{_('data.workato.job_context.account_properties.cicd_test_scheduler', 'account_property', 'cicd.test.scheduler')}"
+        },
+        "uuid": "1e529b09-6e8d-4234-8a81-fb5082946557"
+      }
+    ],
+    "uuid": "a090e692-bcde-4b65-ac8e-de7b46d76ebc",
+    "comment": "Release Name: cicd-testing, Version: 7.2.0"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "clock",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "rest",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_http_connection.connection.json",
+        "name": "CICD | CON | HTTP Connection",
+        "folder": "Connections"
+      }
+    }
+  ]
+}
