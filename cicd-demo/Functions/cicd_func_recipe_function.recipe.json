@@ -1,0 +1,47 @@
+{
+  "name": "CICD | FUNC | Recipe Function",
+  "description": "When there is a function call, do action and other actions",
+  "version": 2,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "8fd0236f",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+    },
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "b6773d7b",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+        },
+        "uuid": "cc545b79-3749-4346-86e0-89c338ae638e"
+      }
+    ],
+    "uuid": "767d5ec8-f52e-482d-b930-81441404d251"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}
