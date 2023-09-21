@@ -1,7 +1,7 @@
 {
   "name": "CICD Demo | FUNC | Test: Scheduler",
   "description": "12.3.0",
-  "version": 10,
+  "version": 11,
   "private": true,
   "concurrency": 1,
   "code": {
@@ -598,6 +598,7 @@
         "toggleCfg": {
         },
         "input": {
+          "message": "#{_('data.workato.job_context.account_properties.cicd_test_scheduler', 'account_property', 'cicd.test.scheduler')}"
         },
         "uuid": "1e529b09-6e8d-4234-8a81-fb5082946557"
       }
