@@ -1,0 +1,7 @@
+{
+  "name": "CICD Demo",
+  "version": "1.0.0",
+  "description": null,
+  "handle": "cicd-demo-v1",
+  "use_prefix": true
+}

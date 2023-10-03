@@ -1,0 +1,16 @@
+{
+  "name": "Demo",
+  "method": "GET",
+  "path": "demo",
+  "legacy": false,
+  "recipe_id": {
+    "zip_name": "API/demo.recipe.json",
+    "name": "Demo",
+    "folder": "API"
+  },
+  "api_group_id": {
+    "zip_name": "cicd_demo.api_group.json",
+    "name": "CICD Demo",
+    "folder": ""
+  }
+}
