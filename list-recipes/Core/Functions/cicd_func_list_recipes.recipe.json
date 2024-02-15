@@ -1,0 +1,483 @@
+{
+  "name": "CICD | FUNC | List Recipes",
+  "description": "When there is a function call, do action",
+  "version": 24,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "5a9cc361",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"environment\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\"},{\"name\":\"customerId\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\"},{\"name\":\"includeCode\",\"type\":\"boolean\",\"optional\":true}]",
+      "result_schema_json": "[{\"name\":\"recipeList\",\"type\":\"array\",\"of\":\"object\",\"label\":\"recipeList\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"ID\",\"name\":\"id\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Name\",\"name\":\"name\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Running\",\"name\":\"running\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"User ID\",\"name\":\"user_id\",\"type\":\"string\"},{\"name\":\"code\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\"},{\"control_type\":\"text\",\"label\":\"Created at\",\"name\":\"created_at\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Updated at\",\"name\":\"updated_at\",\"type\":\"string\"}]}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Environment",
+            "name": "environment",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Customer ID",
+            "name": "customerId",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Include code",
+            "render_input": {
+            },
+            "parse_output": {
+            },
+            "toggle_hint": "Select from option list",
+            "toggle_field": {
+              "label": "Include code",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "includeCode",
+              "type": "boolean",
+              "optional": true
+            },
+            "name": "includeCode",
+            "type": "boolean",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "present",
+              "lhs": "#{_('data.workato_recipe_function.5a9cc361.parameters.customerId')}",
+              "rhs": "",
+              "uuid": "condition-9bcf4aab-994b-4ee3-8f65-78daec93e8da"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "cicd_for_workato_connector_643443_1652105687",
+            "name": "list_all_recipes",
+            "as": "3d714734",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "workspace": "Customer Workspace"
+            },
+            "toggleCfg": {
+              "workato_environment": false
+            },
+            "input": {
+              "workspace": "customer",
+              "workato_environment": "#{_('data.workato_recipe_function.5a9cc361.parameters.environment')}",
+              "workato_customer_user_id": "#{_('data.workato_recipe_function.5a9cc361.parameters.customerId')}"
+            },
+            "comment": "Customer Workspace",
+            "uuid": "ef009be2-d12b-495c-9318-c3716731a229"
+          },
+          {
+            "number": 3,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "b43e48d0",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "result": {
+                "recipeList": {
+                  "____source": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result')}",
+                  "id": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result.first.id')}",
+                  "name": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result.first.name')}",
+                  "running": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result.first.running')}",
+                  "user_id": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result.first.user_id')}",
+                  "created_at": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result.first.created_at')}",
+                  "updated_at": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result.first.updated_at')}",
+                  "code": "#{_('data.cicd_for_workato_connector_643443_1652105687.3d714734.result.first.code')}"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "recipeList",
+                    "type": "array",
+                    "of": "object",
+                    "label": "recipeList",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Running",
+                        "name": "running",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "User ID",
+                        "name": "user_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Code",
+                        "name": "code",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Created at",
+                        "name": "created_at",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Updated at",
+                        "name": "updated_at",
+                        "type": "string"
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "recipeList",
+                    "type": "array",
+                    "of": "object",
+                    "label": "recipeList",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Running",
+                        "name": "running",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "User ID",
+                        "name": "user_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Code",
+                        "name": "code",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Created at",
+                        "name": "created_at",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Updated at",
+                        "name": "updated_at",
+                        "type": "string"
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "5db5c599-ff5c-4bf9-9cdf-78fc71f56254"
+          },
+          {
+            "number": 4,
+            "keyword": "else",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+            },
+            "block": [
+              {
+                "number": 5,
+                "provider": "cicd_for_workato_connector_643443_1652105687",
+                "name": "list_all_recipes",
+                "as": "87a6d39d",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "workspace": "Own Workspace"
+                },
+                "toggleCfg": {
+                  "workato_environment": false
+                },
+                "input": {
+                  "workspace": "own",
+                  "workato_environment": "#{_('data.workato_recipe_function.5a9cc361.parameters.environment')}"
+                },
+                "comment": "Partner Workspace",
+                "uuid": "1f3a9f62-1a6e-4119-897a-55f3195769a3"
+              },
+              {
+                "number": 6,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "a7893d95",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "result": {
+                    "recipeList": {
+                      "____source": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result')}",
+                      "id": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result.first.id')}",
+                      "name": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result.first.name')}",
+                      "running": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result.first.running')}",
+                      "user_id": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result.first.user_id')}",
+                      "created_at": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result.first.created_at')}",
+                      "updated_at": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result.first.updated_at')}",
+                      "code": "#{_('data.cicd_for_workato_connector_643443_1652105687.87a6d39d.result.first.code')}"
+                    }
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "name": "recipeList",
+                        "type": "array",
+                        "of": "object",
+                        "label": "recipeList",
+                        "optional": false,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "ID",
+                            "name": "id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Name",
+                            "name": "name",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Running",
+                            "name": "running",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User ID",
+                            "name": "user_id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Code",
+                            "name": "code",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Created at",
+                            "name": "created_at",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Updated at",
+                            "name": "updated_at",
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "name": "recipeList",
+                        "type": "array",
+                        "of": "object",
+                        "label": "recipeList",
+                        "optional": false,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "ID",
+                            "name": "id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Name",
+                            "name": "name",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Running",
+                            "name": "running",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User ID",
+                            "name": "user_id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Code",
+                            "name": "code",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Created at",
+                            "name": "created_at",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Updated at",
+                            "name": "updated_at",
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "6e184dbf-11e1-4c6b-bd68-73a83b310598"
+              }
+            ],
+            "uuid": "d8f69ccd-d4b7-4301-8618-4563116d4d2c"
+          }
+        ],
+        "uuid": "2f677c78-a86e-4ccc-971c-c742e839b4be"
+      }
+    ],
+    "job_report_schema": [
+      {
+        "name": "custom_column_0",
+        "label": "Environment"
+      },
+      {
+        "name": "custom_column_1",
+        "label": "Customer Id"
+      },
+      {
+        "name": "custom_column_2",
+        "label": "Include Code"
+      }
+    ],
+    "job_report_config": {
+      "custom_column_0": "#{_('data.workato_recipe_function.5a9cc361.parameters.environment')}",
+      "custom_column_1": "#{_('data.workato_recipe_function.5a9cc361.parameters.customerId')}",
+      "custom_column_2": "#{_('data.workato_recipe_function.5a9cc361.parameters.includeCode')}"
+    },
+    "uuid": "9d974d8f-3484-4621-8874-b73086e411c6"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "cicd_for_workato_connector_643443_1652105687",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Core/Connectors/cicd_con_workato_api_sdk.connection.json",
+        "name": "CICD | CON | Workato API SDK",
+        "folder": "Core/Connectors",
+        "custom": true
+      }
+    }
+  ]
+}
