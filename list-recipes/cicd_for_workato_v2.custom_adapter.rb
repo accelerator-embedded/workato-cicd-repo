@@ -1447,6 +1447,7 @@
                 { name: "id", type: "number", convert_output: "integer_conversion" },
                 { name: "name" },
                 { name: "application" },
+                { name: "provider" },                
                 { name: "authorized_at", type: "timestamp" },
                 { name: "authorization_status" },
                 { name: "authorization_error" },
@@ -1838,10 +1839,11 @@
          end
         
         
-        
+         application_list = []
          input_stats = records
-         application_list = input['applicationList'].split(",")
-    
+         if input['applicationList'].present? 
+           application_list = input['applicationList'].split(",")
+         end
 
          stats_application = []
          input_stats.each do |ial|
@@ -2076,7 +2078,14 @@
             type: :string,
             optional: true,
             control_type: "text"
-          }
+          },
+          {
+            name: "plan_id",
+            hint: "Plan ID",
+            type: :string,
+            optional: true,
+            control_type: "text"
+          }          
         ]
       end, 
 
@@ -2086,8 +2095,12 @@
 
         api_endpoint = "#{env_datacenter}/managed_users"
         inputjson = ''
-        if input["external_id"].present?
+        if input["external_id"].present? && input["plan_id"].present? 
+          inputjson = {name: input["workspace_name"], notification_email: input["workspace_email"], external_id: input["external_id"], plan_id: input["plan_id"]}
+        elsif input["external_id"].present?
           inputjson = {name: input["workspace_name"], notification_email: input["workspace_email"], external_id: input["external_id"]}
+        elsif input["plan_id"].present? 
+          inputjson = {name: input["workspace_name"], notification_email: input["workspace_email"], plan_id: input["plan_id"]}
         else
           inputjson = {name: input["workspace_name"], notification_email: input["workspace_email"]}
         end
@@ -2121,6 +2134,173 @@
       end # output_fields.end      
 
     }, # create_customer.end     
+    update_customer: {
+      title: "Update Customer",
+      subtitle: "Update customer from Workato Embedded Admin Account",
+
+      help: "Use this action to update workspace from selected Admin Account",
+
+      description: lambda do |input| 
+        "Update <span class='provider'>Workspace</span> from selected Admin Account"
+      end,
+
+      input_fields: lambda do |object_definitions| 
+        [
+          { 
+            name: "workato_environment",
+            label: "Workato environment",
+            hint: "Select Workato environment.",
+            optional: false,
+            control_type: "select",
+            pick_list: "environments",
+            toggle_hint: "Select from list",
+            toggle_field: {
+              name: "workato_environment",
+              label: "Workato environment",
+              type: :string,
+              control_type: "text",
+              toggle_hint: "Custom Value",
+              hint: "Map DEV, TEST or PROD"
+            }
+          },       
+          {
+            name: "workspace_id",
+            hint: "Id of Workspace to be updated",
+            type: :string,
+            optional: false,
+            control_type: "text"
+          },
+          {
+            name: "plan_id",
+            hint: "Plan ID",
+            type: :string,
+            optional: true,
+            control_type: "text"
+          },
+          {
+            name: "custom_task_limit",
+            hint: "Plan ID",
+            type: :string,
+            optional: true,
+            control_type: "text"
+          }            
+        ]
+      end, 
+
+      execute: lambda do |connection, input, eis, eos, continue|
+        workspace = input["workspace"]
+        env_datacenter = call("get_environment_datacenter", connection, input["workato_environment"])
+        workspace_id = input["workspace_id"]        
+
+        api_endpoint = "#{env_datacenter}/managed_users/#{workspace_id}"
+        inputjson = ''
+        if input["custom_task_limit"].present? && input["plan_id"].present? 
+          inputjson = {custom_task_limit: input["custom_task_limit"].to_i, plan_id: input["plan_id"]}
+        elsif input["custom_task_limit"].present?
+          inputjson = {custom_task_limit: input["custom_task_limit"].to_i}
+        else
+          inputjson = {plan_id: input["plan_id"]}
+        end
+
+        headers = call("get_auth_headers", connection, "#{input["workato_environment"]}")
+        { result: put(api_endpoint, inputjson)
+          .headers(headers)
+          .after_error_response(/.*/) do |_, body, _, message|
+            error("#{message}: #{body}") 
+          end }
+
+      end, # execute.end
+
+      output_fields: lambda do |object_definitions|
+        [
+          {
+            name: "result",
+            label: "Result",
+            control_type: "key_value",
+            type: "object",
+            properties: [
+              { name: "id" },
+              { name: "name" },
+              { name: "external_id" },
+              { name: "created_at" },
+              { name: "updated_at" }            
+            ]
+          }
+        ]
+
+      end # output_fields.end      
+
+    }, # update_customer.end       
+    delete_customer_account: {
+      title: "Delete customer account",
+      subtitle: "Delete customer account from Workato Embedded Admin Account",
+
+      help: "Use this action to delete customer workspace from selected Admin Account",
+
+      description: lambda do |input| 
+        "Delete <span class='provider'>Customer Workspace</span> from selected Admin Account"
+      end,
+
+      input_fields: lambda do |object_definitions| 
+        [
+          { 
+            name: "workato_environment",
+            label: "Workato environment",
+            hint: "Select Workato environment.",
+            optional: false,
+            control_type: "select",
+            pick_list: "environments",
+            toggle_hint: "Select from list",
+            toggle_field: {
+              name: "workato_environment",
+              label: "Workato environment",
+              type: :string,
+              control_type: "text",
+              toggle_hint: "Custom Value",
+              hint: "Map DEV, TEST or PROD"
+            }
+          },       
+          {
+            name: "workspace_id",
+            hint: "Id of Workspace to be deleted",
+            type: :string,
+            optional: false,
+            control_type: "text"
+          }
+        ]
+      end, 
+
+      execute: lambda do |connection, input, eis, eos, continue|
+        workspace = input["workspace"]
+        env_datacenter = call("get_environment_datacenter", connection, input["workato_environment"])
+
+        api_endpoint = "#{env_datacenter}/managed_users/#{input["workspace_id"]}"
+
+        headers = call("get_auth_headers", connection, "#{input["workato_environment"]}")
+        { result: delete(api_endpoint)
+          .headers(headers)
+          .after_error_response(/.*/) do |_, body, _, message|
+            error("#{message}: #{body}") 
+          end }
+
+      end, # execute.end
+
+      output_fields: lambda do |object_definitions|
+        [
+          {
+            name: "Result",
+            label: "result",
+            control_type: "key_value",
+            type: "object",
+            properties: [
+              { name: "success" }         
+            ]
+          }
+        ]
+
+      end # output_fields.end      
+
+    }, # delete_customer_account.end         
     update_properties: {
       title: "Update Account Properties",
       subtitle: "Update Account Properties in the selected environment",
@@ -2320,7 +2500,10 @@
           if connection_name.present?
             http_body_string = '{"name": "'+connection_name+'", "provider":"'+provider +'", "folder_id":"'+folder_id +'"}'
           else
-            http_body_string = '{}'
+            http_body_string = '{ 
+                                  "oauth": true,
+                                  "personalization": true
+                                }'
           end
         end
         headers = call("get_auth_headers", connection, "#{input["workato_environment"]}")
@@ -2952,24 +3135,49 @@
 
     }, # get_environment_details.end        
     get_environments: {
-      title: "Get environments",
-      subtitle: "Get environments/workspaces configured in this connection",
+      title: "Get environment data center URL",
+      subtitle: "Get environment data center URL configured in this connection",
 
-      help: "Use this action to get environments/workspaces configured in this connection",
+      help: "Use this action to get environment data center URL configured in this connection",
 
       description: lambda do |input| 
         "Get Environments"
       end,
 
+      input_fields: lambda do |object_definitions|
+        [
+          { 
+            name: "workato_environment",
+            label: "Workato environment",
+            hint: "Select Workato environment.",
+            optional: false,
+            control_type: "select",
+            pick_list: "environments",
+            toggle_hint: "Select from list",
+            toggle_field: {
+              name: "workato_environment",
+              label: "Workato environment",
+              type: :string,
+              control_type: "text",
+              toggle_hint: "Custom Value",
+              hint: "Map DEV, TEST or PROD"
+            }
+          }
+        ]      
+      end,
 
       execute: lambda do |connection, input, eis, eos, continue|
-        {environment_list: connection['workato_environments'].pluck("name")}
+        
+        {
+          name: connection['workato_environments'].where(name: input["workato_environment"]).pluck("name").first(),
+          data_center_url: connection['workato_environments'].where(name: input["workato_environment"]).pluck("data_center").first()
+        }
       end, # execute.end
 
       output_fields: lambda do |object_definitions|
         [
           {name: "name"},
-          {name: "data_center"}
+          {name: "data_center_url"}
         ]
 
 
@@ -4162,6 +4370,15 @@
       
       input_fields: lambda do |object_definitions| 
         [
+          { 
+            name: "workspace",
+            label: "Workspace",
+            hint: "Select workspace",
+            optional: false,
+            control_type: "select",
+            pick_list: "workspace",
+
+          },
           {
             label: "Workato environment",
             type: "string",
@@ -4179,6 +4396,13 @@
             },             
             optional: false,
             hint: "Select environment."
+          },      
+          { 
+            name: "workato_customer_user_id",
+            label: "Customer Id",
+            hint: "Select customer id",
+            ngIf: "input.workspace == 'customer'",
+            optional: true
           },
           {
             name: "page",
@@ -4190,16 +4414,26 @@
       end, 
       
       execute: lambda do |connection, input, eis, eos, continue|
+        workspace = input["workspace"]
+        
         env_datacenter = call("get_environment_datacenter", connection, input["workato_environment"])
+        
         page = input["page"] || 1
         headers = call("get_auth_headers", connection, "#{input["workato_environment"]}")
-        folder_endpoint = "#{env_datacenter}/projects?page=#{page}"
+        folder_endpoint = workspace == "own" ? "#{env_datacenter}/projects?page=#{page}" : "#{env_datacenter}/managed_users/#{input["workato_customer_user_id"]}/projects?page=#{page}"
         
-        { project_list: get(folder_endpoint)
+        rows = get(folder_endpoint)
           .headers(headers)
           .after_error_response(/.*/) do |_, body, _, message|
             error("#{message}: #{body}") 
-          end }
+          end 
+        
+        if workspace == "own"
+          result = rows
+        else
+          result = rows["result"]
+        end
+        {project_list: result}
       end, # execute.end
       
       output_fields: lambda do |object_definitions|
@@ -4389,7 +4623,7 @@
         workspace = input["workspace"]
         env_datacenter = call("get_environment_datacenter", connection, input["workato_environment"])
       
-        api_endpoint = workspace == "own" ? "#{env_datacenter}/lookup_tables/#{input["lookup_table_id"]}/rows" : "#{env_datacenter}/managed_users/#{input["workato_customer_user_id"]}/lookup_tables/#{input["lookup_table_id"]}/rows"
+        api_endpoint = workspace == "own" ? "#{env_datacenter}/lookup_tables/#{input["lookup_table_id"]}/rows" : "#{env_datacenter}/managed_users/#{input["workato_customer_user_id"]}/lookup_tables/#{input["lookup_table_id"]}/rows/"
 
         value = input["value"]
 
@@ -4617,7 +4851,264 @@
 
       end # output_fields.end      
 
-    }, # list_lookup_tables.end          
+    }, # list_lookup_tables.end    
+    assign_custom_oauth_profile: {
+      title: "Assign Custom Oauth Profile",
+      subtitle: "Assign Custom Oauth Profile in the selected customer environment",
+
+      help: "Use this action to Assign Custom Oauth Profile in the selected customer environment",
+
+      description: lambda do |input| 
+        "Assign <span class='provider'>Custom OAuth</span> Profile"
+      end,
+
+      input_fields: lambda do |object_definitions| 
+        [
+          { 
+            name: "workato_environment",
+            label: "Workato environment",
+            hint: "Select Workato environment.",
+            optional: false,
+            control_type: "select",
+            pick_list: "environments",
+            toggle_hint: "Select from list",
+            toggle_field: {
+              name: "workato_environment",
+              label: "Workato environment",
+              type: :string,
+              control_type: "text",
+              optional: false,
+              toggle_hint: "Custom Value",
+              hint: "Map DEV, TEST or PROD"
+            }
+          },
+          { 
+            name: "workato_customer_user_id",
+            label: "Customer Id",
+            hint: "Select customer id",
+            optional: false
+          },    
+          { 
+            name: "custom_oauth_profile_id",
+            label: "Custom OAuth Profile Id",
+            hint: "Provide lookup table id",
+            optional: false
+          }
+        ]
+      end, 
+
+      execute: lambda do |connection, input, eis, eos, continue|
+        env_datacenter = call("get_environment_datacenter", connection, input["workato_environment"])
+      
+        api_endpoint = "#{env_datacenter}/managed_users/#{input["workato_customer_user_id"]}/custom_oauth_profiles/#{input["custom_oauth_profile_id"]}/assign"
+
+
+        headers = call("get_auth_headers", connection, "#{input["workato_environment"]}")
+        { result: (post(api_endpoint)
+          .headers(headers)
+          .after_error_response(/.*/) do |_, body, _, message|
+            error("#{message}: #{body}") 
+          end)["result"] }
+
+      end, # execute.end
+
+      output_fields: lambda do |object_definitions|
+        [
+          {
+            name: "result",
+            label: "Result",
+            control_type: "key_value",
+            type: "object",
+            properties: [
+              { name: "success" }         
+            ]
+          }
+        ]
+
+      end # output_fields.end      
+
+    }, # assign_custom_oauth_profile.end      
+    unassign_custom_oauth_profile: {
+      title: "Unassign Custom Oauth Profile",
+      subtitle: "Unassign Custom Oauth Profile in the selected customer environment",
+
+      help: "Use this action to Unassign Custom Oauth Profile in the selected customer environment",
+
+      description: lambda do |input| 
+        "Unassign <span class='provider'>Custom OAuth</span> Profile"
+      end,
+
+      input_fields: lambda do |object_definitions| 
+        [
+          { 
+            name: "workato_environment",
+            label: "Workato environment",
+            hint: "Select Workato environment.",
+            optional: false,
+            control_type: "select",
+            pick_list: "environments",
+            toggle_hint: "Select from list",
+            toggle_field: {
+              name: "workato_environment",
+              label: "Workato environment",
+              type: :string,
+              control_type: "text",
+              optional: false,
+              toggle_hint: "Custom Value",
+              hint: "Map DEV, TEST or PROD"
+            }
+          },
+          { 
+            name: "workato_customer_user_id",
+            label: "Customer Id",
+            hint: "Select customer id",
+            optional: false
+          },    
+          { 
+            name: "custom_oauth_profile_id",
+            label: "Custom OAuth Profile Id",
+            hint: "Provide lookup table id",
+            optional: false
+          }
+        ]
+      end, 
+
+      execute: lambda do |connection, input, eis, eos, continue|
+        env_datacenter = call("get_environment_datacenter", connection, input["workato_environment"])
+      
+        api_endpoint = "#{env_datacenter}/managed_users/#{input["workato_customer_user_id"]}/custom_oauth_profiles/#{input["custom_oauth_profile_id"]}/unassign"
+
+
+        headers = call("get_auth_headers", connection, "#{input["workato_environment"]}")
+        { result: (delete(api_endpoint)
+          .headers(headers)
+          .after_error_response(/.*/) do |_, body, _, message|
+            error("#{message}: #{body}") 
+          end)["result"] }
+
+      end, # execute.end
+
+      output_fields: lambda do |object_definitions|
+        [
+          {
+            name: "result",
+            label: "Result",
+            control_type: "key_value",
+            type: "object",
+            properties: [
+              { name: "success" }         
+            ]
+          }
+        ]
+
+      end # output_fields.end      
+
+    }, # unassign_custom_oauth_profile.end   
+    invite_member_to_customer_workspace: {
+      title: "Invite Member to Workspace",
+      subtitle: "Invite Member to Workspace in the selected environment",
+
+      help: "Use this action to Invite Member to Workspace in the selected environment",
+
+      description: lambda do |input| 
+        "Invite <span class='provider'>Member</span> to Workspace"
+      end,
+
+      input_fields: lambda do |object_definitions| 
+        [
+          { 
+            name: "workspace",
+            label: "Workspace",
+            hint: "Select workspace",
+            optional: false,
+            control_type: "select",
+            pick_list: "workspace",
+
+          },  
+          { 
+            name: "workato_environment",
+            label: "Workato environment",
+            hint: "Select Workato environment.",
+            optional: true,
+            control_type: "select",
+            pick_list: "environments",
+            toggle_hint: "Select from list",
+            toggle_field: {
+              name: "workato_environment",
+              label: "Workato environment",
+              type: :string,
+              control_type: "text",
+              optional: true,
+              toggle_hint: "Custom Value",
+              hint: "Map DEV, TEST or PROD"
+            }
+          },
+          { 
+            name: "workato_customer_user_id",
+            label: "Customer Id",
+            hint: "Select customer id",
+            ngIf: "input.workspace == 'customer'",
+            optional: true
+          },    
+          { 
+            name: "name",
+            label: "Name",
+            hint: "Provide collaborator name",
+            optional: false
+          },     
+          {
+            name: "email",
+            hint: "email",
+            type: :string,
+            optional: false,
+            control_type: "text"
+          },
+          {
+            name: "role_name",
+            hint: "role_name",
+            type: :string,
+            optional: false,
+            control_type: "text"
+          }          
+        ]
+      end, 
+
+      execute: lambda do |connection, input, eis, eos, continue|
+        workspace = input["workspace"]
+        env_datacenter = call("get_environment_datacenter", connection, input["workato_environment"])
+      
+        api_endpoint = workspace == "own" ? "#{env_datacenter}/member_invitations" : "#{env_datacenter}/managed_users/#{input["workato_customer_user_id"]}/member_invitations"
+        name = input["name"]
+        email = input["email"]
+        role_name = input["role_name"]
+
+
+        value = '{"name":"'+ name +'", "email":"'+ email +'", "role_name":"'+ role_name +'"}'
+
+
+        headers = call("get_auth_headers", connection, "#{input["workato_environment"]}")
+        { result: (post(api_endpoint, parse_json(value))
+          .headers(headers)
+          .after_error_response(/.*/) do |_, body, _, message|
+            error("#{message}: #{body}") 
+          end)["result"] }
+
+      end, # execute.end
+
+      output_fields: lambda do |object_definitions|
+        [
+          {
+            name: "result",
+            label: "Result",
+            control_type: "key_value",
+            type: "string",
+           
+          }
+        ]
+
+      end # output_fields.end      
+
+    }, # invite_member_to_customer_workspace.end          
   },
 
   methods: {
