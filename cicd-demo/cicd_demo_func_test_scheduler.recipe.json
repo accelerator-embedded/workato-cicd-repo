@@ -1,7 +1,7 @@
 {
   "name": "CICD Demo | FUNC | Test: Scheduler",
   "description": "12.3.0",
-  "version": 11,
+  "version": 12,
   "private": true,
   "concurrency": 1,
   "code": {
@@ -12,10 +12,6 @@
     "title": null,
     "description": "<span class=\"provider\">Trigger</span> on a <span class=\"provider\">specified schedule</span>",
     "keyword": "trigger",
-    "dynamicPickListSelection": {
-    },
-    "toggleCfg": {
-    },
     "input": {
       "time_unit": "minutes",
       "trigger_every": "5"
@@ -38,9 +34,9 @@
         "label": "Start after",
         "name": "start_after",
         "optional": true,
+        "parse_output": "date_time_conversion",
         "since_field": true,
         "type": "date_time",
-        "parse_output": "date_time_conversion",
         "render_input": "date_time_conversion"
       }
     ],
@@ -53,8 +49,6 @@
         "title": "Send request",
         "description": "<span class=\"provider\">Send request</span> via <span class=\"provider\">HTTP</span>",
         "keyword": "action",
-        "dynamicPickListSelection": {
-        },
         "toggleCfg": {
           "response.ignore_http_errors": true
         },
@@ -593,18 +587,29 @@
         "title": null,
         "description": "Log <span class=\"provider\">message</span> to <span class=\"provider\">Job report</span>",
         "keyword": "action",
-        "dynamicPickListSelection": {
-        },
-        "toggleCfg": {
-        },
         "input": {
-          "message": "#{_('data.workato.job_context.account_properties.cicd_test_scheduler', 'account_property', 'cicd.test.scheduler')}"
+          "message": "#{_dp('{\"pill_type\":\"account_property\",\"property_name\":\"cicd.test.scheduler\"}')}    ",
+          "user_logs_enabled": "false"
         },
+        "extended_input_schema": [
+          {
+            "control_type": "switch",
+            "default": false,
+            "disable_formula": true,
+            "extends_schema": true,
+            "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+            "label": "Send to Workato log service",
+            "name": "user_logs_enabled",
+            "optional": true,
+            "type": "string"
+          }
+        ],
         "uuid": "1e529b09-6e8d-4234-8a81-fb5082946557"
       }
     ],
     "comment": "",
-    "uuid": "a090e692-bcde-4b65-ac8e-de7b46d76ebc"
+    "uuid": "a090e692-bcde-4b65-ac8e-de7b46d76ebc",
+    "format_version": 2
   },
   "config": [
     {
