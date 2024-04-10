@@ -1,0 +1,47 @@
+{
+  "name": "Test 1",
+  "description": "",
+  "recipe_id": {
+    "zip_name": "Folder 1/project_test_automation_recipe.recipe.json",
+    "name": "Project Test Automation Recipe",
+    "folder": "Folder 1"
+  },
+  "mocks": [
+    {
+      "step_identifier": "d57c9d22",
+      "step_output": {
+        "parameters": {
+          "test_message": "this message was written by",
+          "user": "Random Name 2"
+        },
+        "context": {
+          "calling_job_id": "0",
+          "calling_recipe_id": "0"
+        }
+      },
+      "type": "stub_output"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "1eb192c4-7592-4d92-a1ce-e444e498df69",
+      "step_identifier": "01e98cc2",
+      "name": "Check 2",
+      "source": {
+        "assertion_source_type": "output_data_pill",
+        "data_pill": {
+          "pill_type": "output",
+          "provider": "logger",
+          "line": "01e98cc2",
+          "path": [
+            "message"
+          ]
+        }
+      },
+      "operator": "equals",
+      "expectation": "this message was written by Random Name 2",
+      "type": "data"
+    }
+  ],
+  "body_digest": "8a6c5dbf5107fc8a7b68a9930110ffde"
+}
