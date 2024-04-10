@@ -1,0 +1,304 @@
+{
+  "name": "TOA 1",
+  "description": "When there is a function call, do action and other actions",
+  "version": 1,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "710489d5",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "input": {
+    },
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_variable",
+        "name": "declare_variable",
+        "as": "4e143edd",
+        "title": "  Create variables 1, test, test2",
+        "description": "Create variables <span class=\"provider\">1</span>, <span class=\"provider\">test</span>, <span class=\"provider\">test2</span>",
+        "keyword": "action",
+        "input": {
+          "variables": {
+            "schema": "[{\"name\":\"1\",\"type\":\"string\",\"optional\":true,\"label\":\"1\",\"details\":{\"real_name\":\"1\"},\"control_type\":\"text\"},{\"name\":\"test\",\"type\":\"string\",\"optional\":true,\"label\":\"test\",\"details\":{\"real_name\":\"test\"},\"control_type\":\"text\"},{\"name\":\"test2\",\"type\":\"string\",\"optional\":true,\"label\":\"test2\",\"details\":{\"real_name\":\"test2\"},\"control_type\":\"text\"}]"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "text",
+            "label": "1",
+            "name": "1",
+            "optional": true,
+            "type": "string",
+            "details": {
+              "real_name": "1"
+            }
+          },
+          {
+            "control_type": "text",
+            "label": "test",
+            "name": "test",
+            "optional": true,
+            "type": "string",
+            "details": {
+              "real_name": "test"
+            }
+          },
+          {
+            "control_type": "text",
+            "label": "test2",
+            "name": "test2",
+            "optional": true,
+            "type": "string",
+            "details": {
+              "real_name": "test2"
+            }
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "add_field_label": "Add a variable",
+            "control_type": "form-schema-builder",
+            "empty_schema_title": "Add variables by giving them a name, type and default value",
+            "exclude_fields": [
+              "hint"
+            ],
+            "item_label": "variable",
+            "label": "Variables",
+            "mark_as_required": true,
+            "name": "variables",
+            "ngIf": "!input.name",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "broadcast_change_event": true,
+                "type": "string",
+                "name": "schema"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "1",
+                    "name": "1",
+                    "type": "string",
+                    "optional": true,
+                    "details": {
+                      "real_name": "1"
+                    },
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "test",
+                    "name": "test",
+                    "type": "string",
+                    "optional": true,
+                    "details": {
+                      "real_name": "test"
+                    },
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "test2",
+                    "name": "test2",
+                    "type": "string",
+                    "optional": true,
+                    "details": {
+                      "real_name": "test2"
+                    },
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  }
+                ],
+                "label": "Data",
+                "type": "object",
+                "name": "data"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "variables.data.1",
+          "variables",
+          "variables.schema",
+          "variables.data.2",
+          "variables.data.3",
+          "variables.data.4",
+          "variables.data.test",
+          "variables.data.test2"
+        ],
+        "uuid": "e0a6e862-fdeb-4a03-87fd-753bc9b2a2ea",
+        "skip": false
+      },
+      {
+        "number": 2,
+        "provider": "workato_variable",
+        "name": "declare_variable",
+        "as": "45ab1cdc",
+        "title": "  Create variables 1, test, test2",
+        "description": "Create variables <span class=\"provider\">1</span>, <span class=\"provider\">test</span>, <span class=\"provider\">test2</span>",
+        "keyword": "action",
+        "input": {
+          "variables": {
+            "schema": "[{\"name\":\"1\",\"type\":\"string\",\"optional\":true,\"label\":\"1\",\"details\":{\"real_name\":\"1\"},\"control_type\":\"text\"},{\"name\":\"test\",\"type\":\"string\",\"optional\":true,\"label\":\"test\",\"details\":{\"real_name\":\"test\"},\"control_type\":\"text\"},{\"name\":\"test2\",\"type\":\"string\",\"optional\":true,\"label\":\"test2\",\"details\":{\"real_name\":\"test2\"},\"control_type\":\"text\"}]"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "text",
+            "label": "1",
+            "name": "1",
+            "optional": true,
+            "type": "string",
+            "details": {
+              "real_name": "1"
+            }
+          },
+          {
+            "control_type": "text",
+            "label": "test",
+            "name": "test",
+            "optional": true,
+            "type": "string",
+            "details": {
+              "real_name": "test"
+            }
+          },
+          {
+            "control_type": "text",
+            "label": "test2",
+            "name": "test2",
+            "optional": true,
+            "type": "string",
+            "details": {
+              "real_name": "test2"
+            }
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "add_field_label": "Add a variable",
+            "control_type": "form-schema-builder",
+            "empty_schema_title": "Add variables by giving them a name, type and default value",
+            "exclude_fields": [
+              "hint"
+            ],
+            "item_label": "variable",
+            "label": "Variables",
+            "mark_as_required": true,
+            "name": "variables",
+            "ngIf": "!input.name",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "broadcast_change_event": true,
+                "type": "string",
+                "name": "schema"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "1",
+                    "name": "1",
+                    "type": "string",
+                    "optional": true,
+                    "details": {
+                      "real_name": "1"
+                    },
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "test",
+                    "name": "test",
+                    "type": "string",
+                    "optional": true,
+                    "details": {
+                      "real_name": "test"
+                    },
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "test2",
+                    "name": "test2",
+                    "type": "string",
+                    "optional": true,
+                    "details": {
+                      "real_name": "test2"
+                    },
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  }
+                ],
+                "label": "Data",
+                "type": "object",
+                "name": "data"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "variables.data.1",
+          "variables",
+          "variables.schema",
+          "variables.data.2",
+          "variables.data.3",
+          "variables.data.4",
+          "variables.data.test",
+          "variables.data.test2"
+        ],
+        "uuid": "f4740fe7-4eb9-497a-b381-1e25443bb590",
+        "skip": false
+      },
+      {
+        "number": 3,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "3123677a",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "input": {
+        },
+        "uuid": "5c581bfa-e8f6-4094-a2ee-dc0a6e286dae"
+      }
+    ],
+    "uuid": "dc455b71-f03b-4bb8-9db4-b4f853f9aca3",
+    "unfinished": false
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}
