@@ -1,0 +1,105 @@
+{
+  "name": "TOA 3",
+  "description": "When there is a trigger event, do action",
+  "version": 1,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "rest",
+    "name": "new_poll_event",
+    "as": "07d9a8dc",
+    "title": "New event via polling",
+    "description": "<span class=\"provider\">New event</span> via <span class=\"provider\">HTTP polling</span>",
+    "keyword": "trigger",
+    "toggleCfg": {
+      "___poll_interval": true
+    },
+    "input": {
+      "output_type": "json",
+      "url": "https://webhooks.workato.com/users/267471/09bffd2f01156d278abf55dbd4271b9a78163d6ecefccb98e6739d27aa98fe1d/webhooks/notify/553c8a44-4b23-4f12-8cff-d5c75ee74490-splunk_doctored__connector_267471_1692974495",
+      "___poll_interval": "60"
+    },
+    "visible_config_fields": [
+      "output_type",
+      "___poll_interval"
+    ],
+    "hidden_config_fields": [
+      "object_name",
+      "headers",
+      "sample_output"
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "logger",
+        "name": "log_message",
+        "as": "90af8a7b",
+        "title": null,
+        "description": "Log <span class=\"provider\">message</span> to <span class=\"provider\">Job report</span>",
+        "keyword": "action",
+        "input": {
+          "user_logs_enabled": "false",
+          "message": "qwerty"
+        },
+        "extended_input_schema": [
+          {
+            "control_type": "switch",
+            "default": false,
+            "disable_formula": true,
+            "extends_schema": true,
+            "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+            "label": "Send to Workato log service",
+            "name": "user_logs_enabled",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "uuid": "8674f2fb-ab2c-4c1c-9767-5cc1da207149"
+      },
+      {
+        "number": 2,
+        "provider": "logger",
+        "name": "log_message",
+        "as": "8c13914e",
+        "title": null,
+        "description": "Log <span class=\"provider\">message</span> to <span class=\"provider\">Job report</span>",
+        "keyword": "action",
+        "input": {
+          "user_logs_enabled": "false",
+          "message": "qwerty"
+        },
+        "extended_input_schema": [
+          {
+            "control_type": "switch",
+            "default": false,
+            "disable_formula": true,
+            "extends_schema": true,
+            "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+            "label": "Send to Workato log service",
+            "name": "user_logs_enabled",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "uuid": "a668df24-e911-4f3e-9c5e-6760747537e8"
+      }
+    ],
+    "uuid": "37c43d43-1950-4570-9843-0ed849e5319f",
+    "unfinished": false
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "rest",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

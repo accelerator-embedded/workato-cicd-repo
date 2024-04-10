@@ -1,0 +1,41 @@
+{
+  "name": "Test 2",
+  "description": "",
+  "recipe_id": {
+    "zip_name": "Folder 1/project_test_automation_recipe.recipe.json",
+    "name": "Project Test Automation Recipe",
+    "folder": "Folder 1"
+  },
+  "mocks": [
+    {
+      "step_identifier": "d57c9d22",
+      "step_output": {
+        "parameters": {
+          "test_message": "some new message for test jobs",
+          "user": "sarthak"
+        },
+        "context": {
+          "calling_job_id": "0",
+          "calling_recipe_id": "0"
+        }
+      },
+      "type": "stub_output"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "6459a06e-abeb-4ecb-9c66-a4e4f198d5a2",
+      "step_identifier": "48ca5573",
+      "name": "Check 1",
+      "source": "step_output",
+      "operator": "equals",
+      "expectation": {
+        "result": {
+          "combined_result": "some new message for test jobs sarthak"
+        }
+      },
+      "type": "data"
+    }
+  ],
+  "body_digest": "f6c5098cd26d8ba99cc8125570ba8880"
+}

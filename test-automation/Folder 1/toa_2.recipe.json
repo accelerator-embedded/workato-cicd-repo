@@ -1,0 +1,230 @@
+{
+  "name": "TOA 2",
+  "description": "When there is a function call, do action and other actions",
+  "version": 1,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "b4e1c713",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "input": {
+    },
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_list",
+        "name": "create_list",
+        "as": "7fc9db6e",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "input": {
+          "size": "25"
+        },
+        "uuid": "4895471d-2f9c-4cc1-8f53-3b48c0193f1d",
+        "skip": false
+      },
+      {
+        "number": 2,
+        "as": "08464fff",
+        "keyword": "foreach",
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 3,
+            "as": "3456afa2",
+            "keyword": "foreach",
+            "repeat_mode": "simple",
+            "clear_scope": "false",
+            "input": {
+            },
+            "block": [
+              {
+                "number": 4,
+                "keyword": "if",
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "less_than",
+                      "lhs": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"foreach\",\"line\":\"3456afa2\",\"path\":[\"seq_no\"]}')}",
+                      "rhs": "100",
+                      "uuid": "condition-f4649cc8-19a1-40e9-bdce-5a46a865cf71"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 5,
+                    "provider": "workato_list",
+                    "name": "accumulate_list_items",
+                    "as": "9a96934b",
+                    "title": "Accumulate items to Hello list",
+                    "description": "Accumulate <span class=\"provider\">items</span> to <span class=\"provider\">Hello</span> list",
+                    "keyword": "action",
+                    "input": {
+                      "name": "Hello",
+                      "list_item": {
+                        "schema": "[{\"name\":\"test\",\"type\":\"string\",\"optional\":true,\"label\":\"test\",\"details\":{\"real_name\":\"test\"},\"control_type\":\"text\"}]",
+                        "data": {
+                          "test": "1"
+                        }
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Items",
+                        "name": "list_items",
+                        "of": "object",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "test",
+                            "name": "test",
+                            "type": "string",
+                            "optional": true,
+                            "details": {
+                              "real_name": "test"
+                            }
+                          }
+                        ],
+                        "type": "array"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "control_type": "form-schema-builder",
+                        "label": "List item fields",
+                        "name": "list_item",
+                        "override": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Schema",
+                            "extends_schema": true,
+                            "type": "string",
+                            "name": "schema"
+                          },
+                          {
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "test",
+                                "name": "test",
+                                "type": "string",
+                                "optional": true,
+                                "details": {
+                                  "real_name": "test"
+                                }
+                              }
+                            ],
+                            "label": "Data",
+                            "type": "object",
+                            "name": "data"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "name",
+                      "list_item.data.test"
+                    ],
+                    "uuid": "2744e5d0-8ac0-4d9a-bd23-91bfc9a48e35",
+                    "skip": false
+                  },
+                  {
+                    "number": 6,
+                    "provider": "workato_variable",
+                    "name": "insert_to_list",
+                    "as": "0878bc43",
+                    "title": "Add items to number list",
+                    "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">number</span> list",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "name": "number (step 3)"
+                    },
+                    "input": {
+                      "location": "end"
+                    },
+                    "extended_input_schema": [
+                      {
+                        "hint": "",
+                        "label": "List item",
+                        "name": "list_item",
+                        "optional": false,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Number",
+                            "name": "number",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "bc254007-2232-4329-9f47-3bf2581f878c",
+                    "skip": false
+                  }
+                ],
+                "uuid": "80f351d4-2096-4674-8301-a1c4db3ecada",
+                "skip": false
+              }
+            ],
+            "source": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_list\",\"line\":\"7fc9db6e\",\"path\":[\"list\"]}')}",
+            "uuid": "4c65e40e-ddb3-487c-bb62-572d7774a91b",
+            "skip": false
+          }
+        ],
+        "source": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_list\",\"line\":\"7fc9db6e\",\"path\":[\"list\"]}')}",
+        "uuid": "67dac18d-2af0-4207-84fd-be4269652301",
+        "skip": false
+      },
+      {
+        "number": 7,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "31b8eb39",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "input": {
+        },
+        "uuid": "c755df49-6626-42a6-94aa-7a60188b3316"
+      }
+    ],
+    "uuid": "ece02a2a-c59f-4913-a99f-6424f9a333a0",
+    "unfinished": false
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_list",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}
