@@ -1,7 +1,7 @@
 {
   "name": "TOA 1",
   "description": "When there is a function call, do action and other actions",
-  "version": 1,
+  "version": 4,
   "private": true,
   "concurrency": 1,
   "code": {
@@ -153,7 +153,10 @@
         "keyword": "action",
         "input": {
           "variables": {
-            "schema": "[{\"name\":\"1\",\"type\":\"string\",\"optional\":true,\"label\":\"1\",\"details\":{\"real_name\":\"1\"},\"control_type\":\"text\"},{\"name\":\"test\",\"type\":\"string\",\"optional\":true,\"label\":\"test\",\"details\":{\"real_name\":\"test\"},\"control_type\":\"text\"},{\"name\":\"test2\",\"type\":\"string\",\"optional\":true,\"label\":\"test2\",\"details\":{\"real_name\":\"test2\"},\"control_type\":\"text\"}]"
+            "schema": "[{\"name\":\"1\",\"type\":\"string\",\"optional\":true,\"label\":\"1\",\"details\":{\"real_name\":\"1\"},\"control_type\":\"text\"},{\"name\":\"test\",\"type\":\"string\",\"optional\":true,\"label\":\"test\",\"details\":{\"real_name\":\"test\"},\"control_type\":\"text\"},{\"name\":\"test2\",\"type\":\"string\",\"optional\":true,\"label\":\"test2\",\"details\":{\"real_name\":\"test2\"},\"control_type\":\"text\"}]",
+            "data": {
+              "test": "#{_dp('{\"pill_type\":\"project_property\",\"property_name\":\"test\"}')}"
+            }
           }
         },
         "extended_output_schema": [
